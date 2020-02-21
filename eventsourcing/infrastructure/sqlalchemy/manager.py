@@ -347,7 +347,7 @@ class SQLAlchemyRecordManager(SQLRecordManager):
         expr = select([sequence_id_col], distinct=True)
 
         if hasattr(self.record_class, "application_name"):
-            expr = expr.where(c.application_name == self.application_name)
+            expr = expr.where(c.application_name == self.application_name).alias('tmp')
 
         try:
             for row in self.session.query(expr):
