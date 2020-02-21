@@ -1,5 +1,6 @@
 import os
 import platform
+import shutil
 import sys
 import unittest
 from os.path import abspath, dirname, join
@@ -102,15 +103,15 @@ class TestFlaskWsgi(TestFlaskApp):
         datastore.close_connection()
 
         # Run uwsgi.
-        if path_to_virtualenv:
-            path_to_uwsgi = join(path_to_virtualenv, "bin", "uwsgi")
-            assert os.path.exists(path_to_uwsgi), path_to_uwsgi
-        else:
-            # In a container, without a virtualenv?
-            path_to_uwsgi = "/usr/local/bin/uwsgi"
-            # Todo: Maybe use shutil.which, after dropping support for Python 2.7.
+        # if path_to_virtualenv:
+        #     path_to_uwsgi = join(path_to_virtualenv, "bin", "uwsgi")
+        #     assert os.path.exists(path_to_uwsgi), path_to_uwsgi
+        # else:
+        #     # In a container, without a virtualenv?
+        #     path_to_uwsgi = "/usr/local/bin/uwsgi"
+        #     # Todo: Maybe use shutil.which, after dropping support for Python 2.7.
 
-        cmd = [path_to_uwsgi]
+        cmd = [shutil.which("uwsgi")]
         if path_to_virtualenv is not None:
             cmd += ["-H", path_to_virtualenv]
         cmd += ["--master"]
